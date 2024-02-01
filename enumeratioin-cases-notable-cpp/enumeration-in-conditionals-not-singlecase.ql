@@ -1,9 +1,9 @@
 /**
- * @name If w enum with no single true state
+ * @name Condition that can be visited with multiple values of enumeration
  * @kind problem
  * @problem.severity warning
  * @precision medium
- * @id cpp/enum-if-not-single-enum
+ * @id cpp/enum-condition-not-single-enum
  */
 
  import cpp

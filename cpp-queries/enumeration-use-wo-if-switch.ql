@@ -9,4 +9,4 @@
  from EnumerationVariableAccess eva
  where not exists( SwitchStmt sws | eva.getEnclosingStmt() = sws) 
  and not exists( IfStmt ifs | eva.getEnclosingStmt() = ifs) 
- select eva, eva.getType()
+ select eva, eva.getType(), eva.getEnclosingElement()
