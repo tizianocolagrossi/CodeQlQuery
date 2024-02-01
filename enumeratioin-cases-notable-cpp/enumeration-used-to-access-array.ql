@@ -9,11 +9,11 @@
  import cpp
  import modules.EnumerationsModule
 
+ // [TODO] use dataflow to discard access with constant value
 
  from EnumerationVariableAccess eva
  where eva.getEnclosingElement().toString() = "access to array"
 
-//  select eva, eva.getType()
  select eva, 
  "Array accessed with enumeration $@", 
  eva.getType(), 
