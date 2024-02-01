@@ -1,11 +1,10 @@
 /**
- * This is an automatically generated file
  * @name Enumeration use
  * @id cpp/enumeration/use
  */
 
  import cpp
- import EnumerationsModule
+ import modules.EnumerationsModule
 
 
  from EnumerationVariableAccess eva 
