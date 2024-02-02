@@ -15,16 +15,13 @@
  eva.getEnclosingStmt() = conds
  and(
     eva.getEnclosingElement().toString() = "... && ..."
-    or 
-    eva.getEnclosingElement().toString() = "... || ..."
-    or
-    eva.getEnclosingElement().toString() = "... != ..."
-    or
-    eva.getEnclosingElement().toString() = "... <= ..."
-    or 
-    eva.getEnclosingElement().toString() = "... >= ..." 
-    or 
-    eva.getEnclosingElement().toString() = "if (...) ..."
+    or eva.getEnclosingElement().toString() = "... || ..."
+    or eva.getEnclosingElement().toString() = "... != ..."
+    or eva.getEnclosingElement().toString() = "... <= ..."
+    or eva.getEnclosingElement().toString() = "... < ..."
+    or eva.getEnclosingElement().toString() = "... >= ..." 
+    or eva.getEnclosingElement().toString() = "... > ..." 
+    or eva.getEnclosingElement().toString() = "if (...) ..."
  )
 //  select ifs, "If cond "+eva.getEnclosingElement().toString().replaceAll("...", "")+" of variable '"+eva.toString()+"' can be visited with multiple values of $@", 
 //  eva.getType(), 
