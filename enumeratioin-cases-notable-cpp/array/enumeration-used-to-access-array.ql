@@ -12,7 +12,7 @@
  // [TODO] use dataflow to discard access with constant value
 
  from EnumerationVariableAccess eva
- where eva.getEnclosingElement().toString() = "access to array"
+ where eva.getEnclosingElement() instanceof ArrayExpr
 
  select eva, 
  "Array accessed with enumeration $@", 

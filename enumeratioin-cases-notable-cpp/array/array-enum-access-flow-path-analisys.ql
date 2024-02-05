@@ -12,6 +12,7 @@ module ArrayEnumAccessFlowConf implements DataFlow::ConfigSig {
   
     predicate isSink(DataFlow::Node sink) {
         sink.asExpr() instanceof Expr
+        and not sink.asExpr() instanceof FunctionCall
     }
 }
 
@@ -33,7 +34,7 @@ import semmle.code.cpp.dataflow.new.DataFlow
 // GLOBAL
 from EnumArrayFlow::PathNode source, EnumArrayFlow::PathNode sink
 where EnumArrayFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Enumeration $@ of type &@ used to acess array $@. Following data paths",
+select sink.getNode(), source, sink, "Enumeration $@ of type $@ used to acess array $@. Following data paths",
 source.getNode().asExpr().(ArrayExpr).getArrayOffset(),
 source.getNode().asExpr().(ArrayExpr).getArrayOffset().toString(),
 source.getNode().asExpr().(ArrayExpr).getArrayOffset().getType(),

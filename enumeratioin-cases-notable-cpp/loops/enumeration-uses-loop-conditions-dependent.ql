@@ -14,5 +14,7 @@ where l.getStmt().getAChild*() = eva
 and sink.asExpr() = eva
 and source.asExpr().getEnclosingStmt() = l
 and DataFlow::localFlow(source, sink)
+and not eva.getEnclosingStmt() instanceof SwitchStmt
+and not eva.getEnclosingStmt() instanceof IfStmt
 
 select eva, "Enumeration variable access $@ of type $@ dependent from $@",eva ,eva.toString(), eva.getType(), eva.getType().toString(), l.getCondition(), "loop"

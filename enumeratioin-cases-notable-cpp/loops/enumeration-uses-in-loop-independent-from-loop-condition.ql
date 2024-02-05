@@ -14,5 +14,7 @@
  and sink.asExpr() = eva
  and source.asExpr().getEnclosingStmt() = l
  and not DataFlow::localFlow(source, sink)
+ and not eva.getEnclosingStmt() instanceof SwitchStmt
+ and not eva.getEnclosingStmt() instanceof IfStmt
  
  select eva, "Enumeration variable access $@ ot  type $@ independent from loop condition $@",eva, eva.toString(), eva.getType(), eva.getType().toString(), l, "loop"
