@@ -27,6 +27,10 @@
     or sink.asExpr().getEnclosingStmt().getEnclosingBlock*() = source.asExpr().getEnclosingStmt().(IfStmt).getElse()
  )
  and not DataFlow::localFlow(source, sink)
- select eva, "Used to index array $@",
+ select eva, "Enum $@ w type $@ used to index array not used in IfStmt $@",
+ eva,
+ eva.toString(),
+ eva.getType(),
+ eva.getType().toString(),
  ae.getArrayBase(),
  ae.getArrayBase().toString()
