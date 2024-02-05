@@ -8,13 +8,25 @@
 
  import cpp
  import modules.EnumerationsModule
+ import semmle.code.cpp.dataflow.new.DataFlow
 
  // [TODO] use dataflow to discard access with constant value
 
- from EnumerationVariableAccess eva, ArrayExpr ae
+ from EnumerationVariableAccess eva, 
+ ArrayExpr ae,
+ DataFlow::Node source, 
+ DataFlow::Node sink
+
  where eva.getEnclosingElement() instanceof ArrayExpr
  and not eva.getEnclosingStmt() instanceof IfStmt
  and ae.getArrayOffset() = eva
+ and sink.asExpr() = ae
+ and source.asExpr().getEnclosingStmt() instanceof IfStmt
+ and( 
+    sink.asExpr().getEnclosingStmt().getEnclosingBlock*() = source.asExpr().getEnclosingStmt().(IfStmt).getThen()
+    or sink.asExpr().getEnclosingStmt().getEnclosingBlock*() = source.asExpr().getEnclosingStmt().(IfStmt).getElse()
+ )
+ and not DataFlow::localFlow(source, sink)
  select eva, "Used to index array $@",
  ae.getArrayBase(),
  ae.getArrayBase().toString()
