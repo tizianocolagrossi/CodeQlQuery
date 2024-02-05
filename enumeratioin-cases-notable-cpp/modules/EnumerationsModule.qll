@@ -1,6 +1,16 @@
 import cpp
 
-
+class EnumerationVariable extends Variable{
+    EnumerationVariable(){
+        (exists(Enum e | this.getType() = e )
+        or 
+        exists(TypedefType tdt, Enum e | 
+                    tdt.getBaseType() = e 
+                    and 
+                    this.getType() = tdt )
+        )
+    }
+}
 
 class EnumerationVariableAccess extends VariableAccess{
     EnumerationVariableAccess(){
