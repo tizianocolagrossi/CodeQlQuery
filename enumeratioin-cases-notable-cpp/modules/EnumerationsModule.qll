@@ -35,6 +35,8 @@ class EnumerationVariableAccessConstant extends EnumerationVariableAccess{
     }
 }
 
+
+
 class EnumIfStmtMultistate  extends IfStmt{
     EnumIfStmtMultistate(){
         exists(EnumerationVariableAccess eva | 
@@ -63,7 +65,7 @@ class EnumIfStmtMultistate  extends IfStmt{
         x.toString() = "call to expression" or
         x.toString() = "if (...) ... "
     }
-    //schifo sistema qui
+
     predicate hasEnumMultistateThen(){
         allowMultistate(this.getEVACondition()) or
         (
@@ -99,3 +101,4 @@ class EnumIfStmtMultistate  extends IfStmt{
     }
 
 }
+
