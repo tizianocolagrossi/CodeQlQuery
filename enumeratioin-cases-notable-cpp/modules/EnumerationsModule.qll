@@ -102,3 +102,36 @@ class EnumIfStmtMultistate  extends IfStmt{
 
 }
 
+
+Loop getAnEnclosingLoopOfExpr(Expr e) { 
+    result = getAnEnclosingLoopOfStmt(e.getEnclosingStmt()) 
+}
+
+Loop getAnEnclosingLoopOfStmt(Stmt s) {
+    result = s.getParent*() and
+    not s = result.(ForStmt).getInitialization()
+    or
+    result = getAnEnclosingLoopOfExpr(s.getParent*())
+}
+
+IfStmt getAnEnclosingIfStmtOfExpr(Expr e){
+    result = getAnEnclosingIfStmtOfStmt(e.getEnclosingStmt()) 
+}
+
+IfStmt getAnEnclosingIfStmtOfStmt(Stmt s){
+    result = s.getParent*() and 
+    not s = result 
+    or 
+    result = getAnEnclosingIfStmtOfExpr(s.getParent*()) 
+}
+
+SwitchStmt getAnEnclosingSwitchStmtOfExpr(Expr e){
+    result = getAnEnclosingSwitchStmtOfStmt(e.getEnclosingStmt()) 
+}
+
+SwitchStmt getAnEnclosingSwitchStmtOfStmt(Stmt s){
+    result = s.getParent*() and
+    not s = result
+    or
+    result = getAnEnclosingSwitchStmtOfExpr(s.getParent*())
+}
