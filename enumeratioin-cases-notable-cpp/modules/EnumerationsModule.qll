@@ -135,3 +135,45 @@ SwitchStmt getAnEnclosingSwitchStmtOfStmt(Stmt s){
     or
     result = getAnEnclosingSwitchStmtOfExpr(s.getParent*())
 }
+
+
+predicate allowSingleState(Expr x) {
+    (
+        x.toString() = "... == ..."
+        and exists( EnumerationVariableAccessConstant evac | 
+            evac.getEnclosingElement() = x
+        )
+    ) 
+    or x.toString() = "! ..." 
+    or (
+        (
+            x.toString() = "... & ..." 
+            or x.toString() = "... >> ..." 
+            or x.toString() = "... << ..."
+            or x.toString() = "... + ..."
+            or x.toString() = "... - ..."
+            // [TODO] check below tostring 
+            or x.toString() = "... --"
+            or x.toString() = "... ++"
+            or x.toString() = "-- ..."
+            or x.toString() = "++ ..."
+        )
+        and allowSingleState(x.getEnclosingElement())
+    )
+}
+
+int getNumberOfConstants(Enum e){
+    result = max(
+        int index, 
+        EnumConstant ec
+        | 
+        ec =  e.getEnumConstant(index)
+        |    
+        index )
+}
+
+Enum getEnumType(EnumerationVariableAccess eva){
+    result = eva.getType() and eva.getType() instanceof Enum
+    or
+    result = eva.getType().(TypedefType).getBaseType()
+}
