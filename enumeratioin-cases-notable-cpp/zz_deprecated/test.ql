@@ -2,33 +2,17 @@
 import cpp
 import modules.EnumerationsModule
 
-from 
-    Variable v,
-    Enum e, 
-    int constantSizeDefined, 
-    int constantSizeCmp
 
-where (
-    v.getType() = e 
-    or
-    v.getType().(TypedefType).getBaseType() = e
-)and constantSizeDefined = getNumberOfConstants(e)
-and constantSizeCmp = count(
-    EnumConstantAccess eca,
-    EnumConstant ec,
-    EnumerationVariableAccess evaInComparison,
-    string value
-    |
-    v = evaInComparison.getTarget()
-    and eca.getEnclosingElement() = evaInComparison.getEnclosingElement()
-    and evaInComparison.getEnclosingElement() instanceof ComparisonOperation
-    and eca.getEnclosingElement() instanceof ComparisonOperation
-    and ec = eca.getTarget()
-    and ec.getDeclaringEnum() = e
-    and value = ec.getValue()
-    |
-    value
-)
+from EnumerationVariable ev, Enum e, int c
+where (e = ev.getType() or ev.getType().(TypedefType).getBaseType() = e)
+and c = count(
+                EnumConstant ec 
+                | 
+                ec.getAnAccess().getEnclosingElement() = ev.getAnAccess().getEnclosingElement() 
+                and
+                ec.getAnAccess().getEnclosingElement() instanceof ComparisonOperation
+                | 
+                ec
+            )
 
-and not v instanceof MemberVariable
-select v, constantSizeCmp, constantSizeDefined
+select ev, e, c, getNumberOfConstants(e)

@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision low
- * @id cpp/enum/return/not.ocnditional
+ * @id cpp/enum/return/notocnditional
  */
 
 import cpp
@@ -20,14 +20,13 @@ from
 where ret = eva.getEnclosingElement()
 and constantSizeDefined = getNumberOfConstants(getEnumType(eva))
 and constantSizeCmp = count(
-    EnumConstantAccess eca,
-    EnumerationVariableAccess evaInComparison
+    EnumConstant ec
     |
-    eva.getTarget() = evaInComparison.getTarget()
-    and eca.getEnclosingElement() = evaInComparison.getEnclosingElement()
-    and evaInComparison.getEnclosingElement() instanceof ComparisonOperation
+    ec.getAnAccess().getEnclosingElement() = eva.getTarget().getAnAccess().getEnclosingElement()
+    and
+    ec.getAnAccess().getEnclosingElement() instanceof ComparisonOperation
     |
-    eca
+    ec
 )
 and constantSizeDefined > constantSizeCmp
 and not exists(EnumConstantAccess eca | eca.getEnclosingElement() = ret )
