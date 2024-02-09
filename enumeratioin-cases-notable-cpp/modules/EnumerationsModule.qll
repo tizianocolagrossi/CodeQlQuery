@@ -163,13 +163,12 @@ predicate allowSingleState(Expr x) {
 }
 
 int getNumberOfConstants(Enum e){
-    result = max(
-        int index, 
+    result = count( 
         EnumConstant ec
         | 
-        ec =  e.getEnumConstant(index)
+        ec =  e.getAnEnumConstant()
         |    
-        index )
+        ec )
 }
 
 Enum getEnumType(EnumerationVariableAccess eva){
