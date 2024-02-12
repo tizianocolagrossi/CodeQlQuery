@@ -50,8 +50,13 @@ and cmpSingleConstantCount = count(
     |
     ec)
 and cmpSingleConstantCount >= amountConstantDefined
-// select v, e, constants, enumElementDecl
-
+and not v.getParentScope() instanceof Type
+and (
+    v.getParentScope().(Function).getBlock().getNumStmt() > 0
+    or
+    v.getParentScope() instanceof Stmt
+)
+// select v,v.getParentScope(), e, cmpSingleConstantCount, amountConstantDefined
 select v, "Variable of type $@ fully compared with all the constant defined ("+cmpSingleConstantCount.toString()+"/"+amountConstantDefined.toString()+")",
 e, 
 e.toString()
