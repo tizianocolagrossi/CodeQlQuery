@@ -7,30 +7,37 @@
  * @id cpp/enum/variables/explored-in-conditions
  */
 
+
 import cpp
-import modules.EnumerationsModule
+// import modules.EnumerationsModule
 
-
-from EnumerationVariable ev, Enum e, int cmpSingleConstantCount, int amountConstantDefined
-where (e = ev.getType() or ev.getType().(TypedefType).getBaseType() = e)
+from Variable v, Enum e, int amountConstantDefined, int cmpSingleConstantCount
+where (v.getType() = e or v.getType().(TypedefType).getBaseType() = e)
+and amountConstantDefined = count(EnumConstant ec| e.getAnEnumConstant() = ec| ec)
 and cmpSingleConstantCount = count(
-                EnumConstant ec, 
-                VariableAccess vac1,
-                VariableAccess vac2
-                | 
-                vac1 = ec.getAnAccess()
-                and 
-                vac2 = ev.getAnAccess()
-                and 
-                vac1.getEnclosingElement() = vac2.getEnclosingElement() 
-                and
-                vac1.getEnclosingElement() instanceof ComparisonOperation
-                | 
-                ec
-            )
-and amountConstantDefined = getNumberOfConstants(e)
-// select ev, e, c, getNumberOfConstants(e)
-and cmpSingleConstantCount < amountConstantDefined 
-select ev, "Variable or type $@ not fully compared with all the constant defined ("+cmpSingleConstantCount.toString()+"/"+amountConstantDefined.toString()+")",
+    EnumConstant ec
+    |
+    exists(
+        EnumConstantAccess eca, 
+        VariableAccess va
+        |
+        ec = eca.getTarget()
+        and
+        e.getAnEnumConstant() = ec
+        and 
+        va.getTarget() = v
+        and
+        va.getEnclosingElement() = eca.getEnclosingElement()
+        and
+        va != eca 
+        and
+        va.getEnclosingElement() instanceof ComparisonOperation
+    )
+    |
+    ec)
+and cmpSingleConstantCount < amountConstantDefined
+// select v, e, constants, enumElementDecl
+
+select v, "Variable of type $@ not fully compared with all the constant defined ("+cmpSingleConstantCount.toString()+"/"+amountConstantDefined.toString()+")",
 e, 
 e.toString()
