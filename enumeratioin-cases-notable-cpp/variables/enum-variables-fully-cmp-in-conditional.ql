@@ -30,7 +30,7 @@ and cmpSingleConstantCount = count(
             )
 and amountConstantDefined = getNumberOfConstants(e)
 // select ev, e, c, getNumberOfConstants(e)
-and cmpSingleConstantCount < amountConstantDefined 
-select ev, "Variable or type $@ not fully compared with all the constant defined ("+cmpSingleConstantCount.toString()+"/"+amountConstantDefined.toString()+")",
+and cmpSingleConstantCount >= amountConstantDefined 
+select ev, "Variable or type $@ fully compared with all the constant defined ("+cmpSingleConstantCount.toString()+"/"+amountConstantDefined.toString()+")",
 e, 
 e.toString()
