@@ -31,13 +31,28 @@ and cmpSingleConstantCount = count(
         va != eca 
         and
         va.getEnclosingElement() instanceof ComparisonOperation
-    )
+    )or(
+        exists(
+        EnumConstantAccess eca,
+        VariableAccess va,
+        EnumSwitch es
+        |
+        va.getTarget() = v
+        and
+        va = es.getExpr()
+        and
+        es.getASwitchCase().getExpr() = eca
+        and 
+        ec = eca.getTarget()
+        and
+        e.getAnEnumConstant() = ec
+    ))
     |
     ec)
 and cmpSingleConstantCount >= amountConstantDefined
 // select v, e, constants, enumElementDecl
 
-select v, "Variable of type $@ not fully compared with all the constant defined ("+cmpSingleConstantCount.toString()+"/"+amountConstantDefined.toString()+")",
+select v, "Variable of type $@ fully compared with all the constant defined ("+cmpSingleConstantCount.toString()+"/"+amountConstantDefined.toString()+")",
 e, 
 e.toString()
 // select v, e, constants, enumElementDecl
