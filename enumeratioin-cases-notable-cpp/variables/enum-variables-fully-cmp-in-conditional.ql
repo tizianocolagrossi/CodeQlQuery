@@ -1,11 +1,10 @@
-// /**
-//  * @name Amount state comp for enum variable
-//  * @description Return the amount of state of the enum that where compared with enum constants
-//  * @kind problem
-//  * @problem.severity warning
-//  * @precision low
-//  * @id cpp/enum/variables/explored-in-conditions
-//  */
+/**
+ * @name Amount state comp for enum variable fully
+ * @kind problem
+ * @problem.severity warning
+ * @precision low
+ * @id cpp/enum/variables/fully-explored-in-conditions
+ */
 
 import cpp
 // import modules.EnumerationsModule
