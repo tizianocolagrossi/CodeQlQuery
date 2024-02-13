@@ -1,7 +1,11 @@
 import cpp
 import modules.EnumerationsModule
 
-from ConditionalExpr ce, EnumerationVariableAccess eva, Expr t, Expr e
+from 
+EnumerationVariableAccess eva, 
+ConditionalExpr ce, 
+Expr t, 
+Expr e
 where ce = eva.getEnclosingElement()
 and ce.getThen() = t and ce.getElse() = e
 and not t.isConstant() 

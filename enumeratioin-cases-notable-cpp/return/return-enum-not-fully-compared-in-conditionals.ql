@@ -13,21 +13,50 @@ import modules.EnumerationsModule
 
 from 
     ReturnStmt ret, 
-    EnumerationVariableAccess eva, 
+    EnumerationVariableAccess eva,
+    Enum e,
     int constantSizeDefined, 
     int constantSizeCmp
 // select all return statement with enumeration va
 where ret = eva.getEnclosingElement()
-and constantSizeDefined = getNumberOfConstants(getEnumType(eva))
+and e = getEnumType(eva)
+and constantSizeDefined = getNumberOfConstants(e)
 and constantSizeCmp = count(
     EnumConstant ec
     |
-    ec.getAnAccess().getEnclosingElement() = eva.getTarget().getAnAccess().getEnclosingElement()
-    and
-    ec.getAnAccess().getEnclosingElement() instanceof ComparisonOperation
+    exists(
+        EnumConstantAccess eca, 
+        VariableAccess va
+        |
+        ec = eca.getTarget()
+        and
+        e.getAnEnumConstant() = ec
+        and 
+        va.getTarget() = eva.getTarget()
+        and
+        va.getEnclosingElement() = eca.getEnclosingElement()
+        and
+        va != eca 
+        and
+        va.getEnclosingElement() instanceof ComparisonOperation
+    )or(
+        exists(
+        EnumConstantAccess eca,
+        VariableAccess va,
+        EnumSwitch es
+        |
+        va.getTarget() = eva.getTarget()
+        and
+        va = es.getExpr()
+        and
+        es.getASwitchCase().getExpr() = eca
+        and 
+        ec = eca.getTarget()
+        and
+        e.getAnEnumConstant() = ec
+    ))
     |
-    ec
-)
+    ec)
 and constantSizeDefined > constantSizeCmp
 and not exists(EnumConstantAccess eca | eca.getEnclosingElement() = ret )
 select ret, 

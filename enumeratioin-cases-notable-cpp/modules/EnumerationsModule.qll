@@ -176,3 +176,42 @@ Enum getEnumType(EnumerationVariableAccess eva){
     or
     result = eva.getType().(TypedefType).getBaseType()
 }
+
+int getAmountOfStateCompared(Variable v, Enum e){
+    result = count(
+       EnumConstant ec
+       |
+       exists(
+           EnumConstantAccess eca, 
+           VariableAccess va
+           |
+           ec = eca.getTarget()
+           and
+           e.getAnEnumConstant() = ec
+           and 
+           va.getTarget() = v
+           and
+           va.getEnclosingElement() = eca.getEnclosingElement()
+           and
+           va != eca 
+           and
+           va.getEnclosingElement() instanceof ComparisonOperation
+       )or(
+           exists(
+           EnumConstantAccess eca,
+           VariableAccess va,
+           EnumSwitch es
+           |
+           va.getTarget() = v
+           and
+           va = es.getExpr()
+           and
+           es.getASwitchCase().getExpr() = eca
+           and 
+           ec = eca.getTarget()
+           and
+           e.getAnEnumConstant() = ec
+       ))
+       |
+       ec)
+ }
