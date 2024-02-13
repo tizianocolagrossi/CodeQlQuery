@@ -30,7 +30,7 @@ and not ifs.getElse() instanceof IfStmt
 and not ifs.getElse() instanceof ReturnStmt
 
 and source.asExpr() = eva
-and sink.asExpr() instanceof EnumerationVariableAccess
+and sink.asExpr() instanceof VariableAccess
 and ifs = getAnEnclosingIfStmtOfStmt(sink.asExpr().(VariableAccess).getEnclosingStmt())
 and not sink.asExpr().getEnclosingStmt() instanceof SwitchStmt
 and not sink.asExpr().getEnclosingStmt() instanceof IfStmt
