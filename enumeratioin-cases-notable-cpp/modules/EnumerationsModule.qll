@@ -135,16 +135,14 @@ SwitchStmt getAnEnclosingSwitchStmtOfStmt(Stmt s){
     or
     result = getAnEnclosingSwitchStmtOfExpr(s.getParent*())
 }
-
-
 predicate allowSingleState(Expr x) {
     (
-        x.toString() = "... == ..."
+        x instanceof EQExpr
         and exists( EnumerationVariableAccessConstant evac | 
             evac.getEnclosingElement() = x
         )
     ) 
-    or x.toString() = "! ..." 
+    or x instanceof NotExpr
     or (
         (
             x.toString() = "... & ..." 
@@ -152,7 +150,8 @@ predicate allowSingleState(Expr x) {
             or x.toString() = "... << ..."
             or x.toString() = "... + ..."
             or x.toString() = "... - ..."
-            // [TODO] check below tostring 
+            or x.toString() = "... = ..."
+       
             or x.toString() = "... --"
             or x.toString() = "... ++"
             or x.toString() = "-- ..."
